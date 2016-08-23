@@ -1,0 +1,30 @@
+{
+  "name": "VRPuzzle",
+  "version": "0.0.0",
+  "description": "vr puzzle game",
+  "scripts": {
+    "start": "webpack-dev-server --hot --inline --progress --colors --history-api-fallback --define process.env.NODE_ENV='\"development\"'",
+    "build": "webpack --progress --colors -p --define process.env.NODE_ENV='\"production\"'",
+    "server": "python -m SimpleHTTPServer 8010",
+    "commit": "git add src/* public/bundle.js & git commit -am'update' & git push "
+  },
+  "repository": {
+    "type": "git"
+  },
+  "dependencies": {
+    "babel-polyfill": "^6.9.1",
+    "sweetalert": "^1.1.3",
+    "three": "^0.76.1",
+    "webvr-polyfill": "^0.9.5"
+  },
+  "devDependencies": {
+    "babel-core": "^6.11.4",
+    "babel-loader": "^6.2.4",
+    "babel-preset-es2015": "^6.9.0",
+    "babel-preset-es2017": "^1.4.0",
+    "eslint": "^3.1.1",
+    "webpack": "^1.13.1",
+    "webpack-dev-server": "^1.14.1",
+    "webvr-boilerplate": "^0.4.6"
+  }
+}
