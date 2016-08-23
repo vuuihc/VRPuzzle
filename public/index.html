@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+<title>Web VR boilerplate</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0, shrink-to-fit=no">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<style>
+body {
+  width: 100%;
+  height: 100%;
+  background-color: #000;
+  color: #fff;
+  margin: 0px;
+  padding: 0;
+  overflow: hidden;
+}
+</style>
+</head>
+
+<body>
+
+</body>
+
+<!--
+  A polyfill for Promises. Needed for IE and Edge.
+  -->
+<!-- <script src="/node_modules/es6-promise/dist/es6-promise.js"></script> -->
+
+<!--
+  three.js 3d library
+  -->
+<!-- <script src="/node_modules/three/three.js"></script> -->
+
+<!--
+  VRControls.js acquires positional information from connected VR devices and applies the transformations to a three.js camera object.
+  从连接的VR设备中获得位置信息并应用在camera对象上
+   -->
+<script src="node_modules/three/examples/js/controls/VRControls.js"></script>
+
+<!--
+  VREffect.js handles stereo camera setup and rendering.
+  处理立体视觉和绘制相关
+  -->
+<script src="node_modules/three/examples/js/effects/VREffect.js"></script>
+
+<!--
+  A polyfill for WebVR using the Device{Motion,Orientation}Event API.
+  -->
+<!-- <script src="/node_modules/webvr-polyfill/build/webvr-polyfill.js"></script> -->
+
+<!--
+  Helps enter and exit VR mode, provides best practices while in VR.
+  界面按钮以及进入/退出VR模式的控制等
+  -->
+<!-- <script src="/node_modules/webvr-boilerplate/build/webvr-manager.js"></script> -->
+
+
+<script src="VRPuzzle.bundle.js"></script>
+
+</html>
