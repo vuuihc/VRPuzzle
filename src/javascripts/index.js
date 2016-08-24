@@ -35,7 +35,7 @@ var manager = new WebVRManager(renderer, effect, params);
 
 
 // Add a repeating grid as a skybox.
-var boxSize = 5;
+var boxSize = 4;
 var loader = new THREE.TextureLoader();
 loader.load('public/images/box.png', onTextureLoaded);
 
@@ -63,15 +63,18 @@ function onTextureLoaded(texture) {
 }
 
 // Create 3D objects.
-var geometry = new THREE.BoxGeometry(0.5, 0.5, 0.5);
+var geometry = new THREE.BoxGeometry(0.2, 0.2, 0.2);
 var material = new THREE.MeshNormalMaterial();
 var cube = new THREE.Mesh(geometry, material);
 
 // Position cube mesh to be right in front of you.
 cube.position.set(0, controls.userHeight, -1);
-
+// cube.position.set(0, 2, -1);
+var panelGeometry = new THREE.PlaneGeometry(2, 1);
+var panel = new THREE.Mesh(panelGeometry,material);
+panel.position.set(0,2.5,-1.999)
 // Add cube mesh to your three.js scene
-scene.add(cube);
+scene.add(panel);
 
 // Kick off animation loop
 requestAnimationFrame(animate);
@@ -81,6 +84,7 @@ window.addEventListener('vrdisplaypresentchange', onResize, true);
 
 // Request animation frame loop function
 var lastRender = 0;
+
 function animate(timestamp) {
   var delta = Math.min(timestamp - lastRender, 500);
   lastRender = timestamp;
@@ -92,9 +96,11 @@ function animate(timestamp) {
   //更新获取HMD的信息
   controls.update();
 
+
   // Render the scene through the manager.
   //进行camera更新和场景绘制
   manager.render(scene, camera, timestamp);
+  // renderer.render(scene,camera)
 
   requestAnimationFrame(animate);
 }
