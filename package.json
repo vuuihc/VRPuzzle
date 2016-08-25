@@ -5,7 +5,7 @@
   "scripts": {
     "start": "webpack-dev-server --hot --inline --progress --colors --history-api-fallback --define process.env.NODE_ENV='\"development\"'",
     "build": "webpack --progress --colors -p --define process.env.NODE_ENV='\"production\"'",
-    "server": "python -m SimpleHTTPServer 8010",
+    "server": "python -m SimpleHTTPServer 3035",
     "commit": "git add src/* public/bundle.js & git commit -am'update' & git push "
   },
   "repository": {

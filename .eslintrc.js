@@ -8,6 +8,10 @@ module.exports = {
     "parserOptions": {
         "sourceType": "module"
     },
+    "globals": {
+        "THREE": false,
+        "WebVRManager": false
+    },
     "rules": {
         "indent": [
             "error",
