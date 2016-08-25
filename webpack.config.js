@@ -48,7 +48,7 @@ module.exports = {
 		  },
 		  {
 			test:/\.(png|jpg|bmp)$/,
-			loader: 'url?limit=5000&name=images/[name].[ext]'
+			loader: 'url?limit=5000&name=images/puzzles/[name].[ext]'
 		  }
 		]
 	},

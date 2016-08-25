@@ -110,7 +110,8 @@ export default class Game{
 
         // load an image
         var imageObj = new Image()
-        imageObj.src = "../../public/images/puzzles/cartoon (1).jpg"
+        imageObj.src = require("../../public/images/puzzles/cartoon (1).jpg")
+        
         // after the image is loaded, this function executes
         console.log(canvas2.width,canvas2.height)
         console.log(this.img.src)
