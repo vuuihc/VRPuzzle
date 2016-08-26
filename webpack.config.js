@@ -28,7 +28,7 @@ module.exports = {
 	},
 	output:{
 		path:__dirname+'/public',
-		publicPath:'/VRPuzzle/public/',
+		publicPath:isProduction()?'/VRPuzzle/public/':'/public/',
 		filename:"[name].bundle.js"
 	},
 	module:{
