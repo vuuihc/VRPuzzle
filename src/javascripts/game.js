@@ -77,12 +77,8 @@ export default class Game{
         this.setupStage()
     }
     placePieces(){
-        this.img = document.getElementById("img1")
-        this.imgWidth = this.img.width
-        this.imgHeight = this.img.height
+
         this.columnNumber = 4
-        this.pieceWidth = this.pieceHeight = this.imgWidth/this.columnNumber
-        this.rowNumber = this.imgHeight/this.pieceWidth
 
         var canvas1 = document.createElement("canvas")
         var context1 = canvas1.getContext("2d")
@@ -103,41 +99,50 @@ export default class Game{
         mesh1.position.set(0,2,9)
         this.scene.add( mesh1 )
 
-        var canvas2 = document.createElement("canvas")
-        var context2 = canvas2.getContext("2d")
-        // canvas contents will be used for a texture
-        var texture2 = new THREE.Texture(canvas2)
-
         // load an image
-        var imageObj = new Image()
+        let imageObj = new Image()
         imageObj.src = require("../../public/images/puzzles/cartoon (1).jpg")
-        
-        // after the image is loaded, this function executes
-        console.log(canvas2.width,canvas2.height)
-        console.log(this.img.src)
-        let ws = (canvas2.width/1.5)/imageObj.width
-        let hs = (canvas2.height/1.5)/imageObj.height
+        // this.columnNumber = 2
+        let canvas = document.createElement("canvas")
+        let context = canvas.getContext("2d")
+        let ws = (canvas.width/1.5)/imageObj.width
+        let hs = (canvas.height/1.5)/imageObj.height
         this.scale = Math.min(ws,hs)
-        context2.scale(this.scale,this.scale)
-
+        this.pieceWidth = imageObj.width/this.columnNumber
+        this.pieceHeight = imageObj.height/this.columnNumber
+        console.log(this.pieceWidth,this.pieceHeight)
+        let texture,material,mesh,self = this
+        this.meshList = []
         imageObj.onload = function(){
-            context2.drawImage(imageObj, imageObj.width, imageObj.height)
-            if ( texture2 ) // checks if texture exists
-                texture2.needsUpdate = true
+            for(let i = 0; i<self.columnNumber;i++){
+                for(let j = 0; j<self.columnNumber; j++){
+                    // context.clearRect(0,0,canvas.width,canvas.height)
+                    // canvas contents will be used for a texture
+                    canvas = document.createElement("canvas")
+                    context = canvas.getContext("2d")
+                    texture = new THREE.Texture(canvas)
+                    // after the image is loaded, this function executes
+                    // console.log(canvas.width,canvas.height)
+                    // console.log(this.img.src)
+                    context.scale(self.scale,this.scale)
+                    context.drawImage(imageObj, i*self.pieceWidth,j*self.pieceHeight,self.pieceWidth,self.pieceHeight,0,0,canvas.width,canvas.height)
+                    if ( texture ) // checks if texture exists
+                        texture.needsUpdate = true
 
+                    material = new THREE.MeshBasicMaterial( {map: texture, side:THREE.DoubleSide} )
+                    material.transparent = false
+
+                    mesh = new THREE.Mesh(
+                        new THREE.PlaneGeometry(3, 3),
+                        material
+                    )
+                    mesh.position.set(i*3, 3*self.columnNumber-j*3,-9)
+                    self.meshList.push(mesh)
+                    self.scene.add( mesh )
+                    // console.log(typeof this.scene)
+                }
+            }
         }
-        var material2 = new THREE.MeshBasicMaterial( {map: texture2, side:THREE.DoubleSide} )
-        material2.transparent = true
-
-
-        // console.log(canvas2.width, canvas2.height)
-        var mesh2 = new THREE.Mesh(
-            new THREE.PlaneGeometry(20, 20),
-            material2
-        )
-        mesh2.position.set(0,8,-9.9)
-        this.scene.add( mesh2 )
-
     }
     render(timestamp){
         // var delta = Math.min(timestamp - this.lastRender, 500)
@@ -149,7 +154,8 @@ export default class Game{
           // Update VR headset position and apply to camera.
           //更新获取HMD的信息
         this.controls.update()
-
+        if(this.meshList)
+            this.meshList[0].rotation.y += 0.2
 
           // Render the scene through the manager.
           //进行camera更新和场景绘制
