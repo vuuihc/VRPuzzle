@@ -1,4 +1,4 @@
-import Piece from "./piece.js"
+import Mouse from "./mouse.js"
 
 export default class Game{
     constructor(){
@@ -29,6 +29,9 @@ export default class Game{
         }
         this.manager = new WebVRManager(this.renderer, this.effect, params)
 
+        // raycaster
+        this.raycaster = new THREE.Raycaster()
+        this.mouse = new Mouse()
         //bind this
         this.onTextureLoaded = this.onTextureLoaded.bind(this)
         this.onResize = this.onResize.bind(this)
@@ -37,7 +40,8 @@ export default class Game{
         this.setStageDimensions = this.setStageDimensions.bind(this)
         this.placePieces = this.placePieces.bind(this)
         //
-
+        this.meshList = []
+        this.logFlag = true
         // Add a repeating grid as a skybox.
         this.boxSize = 20
         this.loader = new THREE.TextureLoader()
@@ -110,9 +114,8 @@ export default class Game{
         this.scale = Math.min(ws,hs)
         this.pieceWidth = imageObj.width/this.columnNumber
         this.pieceHeight = imageObj.height/this.columnNumber
-        console.log(this.pieceWidth,this.pieceHeight)
+        // console.log(this.pieceWidth,this.pieceHeight)
         let texture,material,mesh,self = this
-        this.meshList = []
         imageObj.onload = function(){
             for(let i = 0; i<self.columnNumber;i++){
                 for(let j = 0; j<self.columnNumber; j++){
@@ -137,7 +140,7 @@ export default class Game{
                         material
                     )
                     mesh.position.set(i*3, 3*self.columnNumber-j*3,-9)
-                    self.meshList.push(mesh)
+                    self.meshList.push(mesh.id)
                     self.scene.add( mesh )
                     // console.log(typeof this.scene)
                 }
@@ -147,15 +150,35 @@ export default class Game{
     render(timestamp){
         // var delta = Math.min(timestamp - this.lastRender, 500)
         this.lastRender = timestamp
-
-          //立方体的旋转
+        //处理鼠标点击
+        this.raycaster.setFromCamera(this.mouse,this.camera)
+        let intersects = this.raycaster.intersectObjects( this.scene.children ,false)
+        for ( var i = 0; i < intersects.length; i++ ) {
+            // if(intersects[ i ].object.id in this.meshList)
+                intersects[ i ].object.material.color.set( 0xff0000 )
+        }
+        // console.log(this.meshList)
+        // let intersectList = intersects.map(_=>_.object)
+        // if(this.logFlag && intersectList.length!==0){
+        //     console.log(intersectList)
+        // }
+        // for(let mesh of this.meshList){
+        //     if(mesh in intersectList){
+        //         mesh.material.color.set(0xff0000)
+        //     }
+        // }
+        //   立方体的旋转
         //   this.cube.rotation.y += delta * 0.0006;
 
           // Update VR headset position and apply to camera.
           //更新获取HMD的信息
         this.controls.update()
-        if(this.meshList)
-            this.meshList[0].rotation.y += 0.2
+        // console.log(this.meshList.length)
+        // if(this.meshList.length!==0){
+            // this.meshList[0].rotation.y += 0.2
+            // this.meshList[3].rotation.y += 0.2
+            // this.meshList[0].rotation.y += 0.2
+        // }
 
           // Render the scene through the manager.
           //进行camera更新和场景绘制
