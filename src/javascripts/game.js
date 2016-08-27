@@ -140,7 +140,7 @@ export default class Game{
                         material
                     )
                     mesh.position.set(i*3, 3*self.columnNumber-j*3,-9)
-                    self.meshList.push(mesh.id)
+                    self.meshList.push(mesh)
                     self.scene.add( mesh )
                     // console.log(typeof this.scene)
                 }
@@ -152,21 +152,30 @@ export default class Game{
         this.lastRender = timestamp
         //处理鼠标点击
         this.raycaster.setFromCamera(this.mouse,this.camera)
-        let intersects = this.raycaster.intersectObjects( this.scene.children ,false)
-        for ( var i = 0; i < intersects.length; i++ ) {
-            // if(intersects[ i ].object.id in this.meshList)
-                intersects[ i ].object.material.color.set( 0xff0000 )
-        }
+        // console.log(this.mouse.x,this.mouse.y)
+        let intersects = this.raycaster.intersectObjects( this.scene.children )
+        // for ( var i = 0; i < intersects.length; i++ ) {
+        //     // if(intersects[ i ].object.id in this.meshList)
+        //     // intersects[ i ].object.material.color.set( 0xff0000 )
+        //     console.log(intersects[i])
+        // }
+        this.mouse.x = this.mouse.y = undefined
         // console.log(this.meshList)
         // let intersectList = intersects.map(_=>_.object)
         // if(this.logFlag && intersectList.length!==0){
         //     console.log(intersectList)
         // }
-        // for(let mesh of this.meshList){
-        //     if(mesh in intersectList){
-        //         mesh.material.color.set(0xff0000)
-        //     }
-        // }
+        if(intersects.length>0){
+            for(let mesh of this.meshList){
+                if(mesh.id == intersects[0].object.id){
+                    // mesh.material.color.set(0xff0000)
+                    mesh.position.z = -7
+                }else{
+                    mesh.position.z = -9
+                    // mesh.material.color.set(0xffffff)
+                }
+            }
+        }
         //   立方体的旋转
         //   this.cube.rotation.y += delta * 0.0006;
 

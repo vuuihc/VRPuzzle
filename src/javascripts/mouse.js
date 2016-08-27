@@ -1,6 +1,8 @@
 export default class Mouse extends THREE.Vector2{
     constructor(props){
         super(props)
+        this.x = undefined
+        this.y = undefined
         window.addEventListener( "click", this.onMouseClick.bind(this), false )
 
     }
