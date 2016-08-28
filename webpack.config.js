@@ -21,6 +21,7 @@ if(isProduction()){
     new webpack.HotModuleReplacementPlugin()
   )
 }
+var publicPath = isProduction()?'/VRPuzzle/public/':'/public/'
 module.exports = {
 	devtool: 'inline-source-map',
 	entry:{
@@ -28,7 +29,7 @@ module.exports = {
 	},
 	output:{
 		path:__dirname+'/public',
-		publicPath:isProduction()?'/VRPuzzle/public/':'/public/',
+		publicPath: '/VRPuzzle/public/',
 		filename:"[name].bundle.js"
 	},
 	module:{
