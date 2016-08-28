@@ -140,7 +140,7 @@ export default class Game{
                         self.freePieceNumber--
                         self.freePieceList.push(mesh.id)
                     }else{
-                        mesh.position.set(i*self.planeWidth-self.scaledWidth/2+self.planeWidth/2, self.scaledHeight-self.planeHeight/2-j*self.planeHeight,-10)
+                        mesh.position.set(i*self.planeWidth-self.scaledWidth/2+self.planeWidth/2, self.scaledHeight-self.planeHeight/2-j*self.planeHeight,-9.99)
                     }
                     // mesh.position.set(0, 2,-9)
                     self.meshList.push(mesh)
@@ -174,7 +174,9 @@ export default class Game{
         // }
         if(intersects.length>0){
             for(let mesh of this.meshList){
-                if((mesh.id in this.freePieceList)&&mesh.id!=intersects[0].object.id){
+                // console.log(this.freePieceList)
+                // console.log(`${mesh.id} in ${this.freePieceList},${mesh.id in this.freePieceList}`)
+                if((this.freePieceList.indexOf(mesh.id)>-1)&&mesh.id!=intersects[0].object.id){
                     // mesh.material.color.set(0xff0000)
                     mesh.rotation.x = Math.PI/2
                 }else{
