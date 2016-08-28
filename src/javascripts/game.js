@@ -16,7 +16,9 @@ export default class Game{
 
         // Apply VR headset positional data to camera.
         this.controls = new THREE.VRControls(this.camera)
+        // this.camera.position.y = 5
         //站立姿态
+        this.controls.userHeight = 10
         this.controls.standing = true
         this.effect = new THREE.VREffect(this.renderer)
         this.effect.setSize(window.innerWidth, window.innerHeight)
@@ -68,11 +70,11 @@ export default class Game{
         this.skybox.position.y = this.boxSize/2
         this.scene.add(this.skybox)
 
-        var panelGeometry = new THREE.PlaneGeometry(2, 1)
-        var panel = new THREE.Mesh(panelGeometry,material)
-        panel.position.set(0,2.5,-1.999)
-      // Add cube mesh to your three.js scene
-        this.scene.add(panel)
+      //   var panelGeometry = new THREE.PlaneGeometry(2, 1)
+      //   var panel = new THREE.Mesh(panelGeometry,material)
+      //   panel.position.set(0,2.5,-1.999)
+      // // Add cube mesh to your three.js scene
+      //   this.scene.add(panel)
         this.placePieces()
 
       // For high end VR devices like Vive and Oculus, take into account the stage
@@ -83,30 +85,16 @@ export default class Game{
     placePieces(){
 
         this.columnNumber = 4
-
-        var canvas1 = document.createElement("canvas")
-        var context1 = canvas1.getContext("2d")
-        context1.font = "Bold 40px Arial"
-        context1.fillStyle = "rgba(255,255,255,0.95)"
-        context1.fillText("Hello, world!", 50, 50)
-
-        // canvas contents will be used for a texture
-        var texture1 = new THREE.Texture(canvas1)
-        texture1.needsUpdate = true
-
-        var material1 = new THREE.MeshBasicMaterial( {map: texture1, side:THREE.DoubleSide } )
-        // material1.transparent = true;
-        var mesh1 = new THREE.Mesh(
-            new THREE.PlaneGeometry(10, 5),
-            material1
-          )
-        mesh1.position.set(0,2,9)
-        this.scene.add( mesh1 )
-
+        this.pieceNumber = this.columnNumber*this.columnNumber
+        this.scaledWidth = 16
+        this.scaledHeight = 9
+        this.freePieceNumber = this.pieceNumber*1/2
+        this.freePieceList = []
+        this.planeWidth = this.scaledWidth/this.columnNumber
+        this.planeHeight = this.scaledHeight/this.columnNumber
         // load an image
         let imageObj = new Image()
         imageObj.src = require("../../public/images/puzzles/cartoon (1).jpg")
-        // this.columnNumber = 2
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
         let ws = (canvas.width/1.5)/imageObj.width
@@ -115,10 +103,10 @@ export default class Game{
         this.pieceWidth = imageObj.width/this.columnNumber
         this.pieceHeight = imageObj.height/this.columnNumber
         // console.log(this.pieceWidth,this.pieceHeight)
-        let texture,material,mesh,self = this
+        let self = this
         imageObj.onload = function(){
-            for(let i = 0; i<self.columnNumber;i++){
-                for(let j = 0; j<self.columnNumber; j++){
+            for(let i = 0,index=0,texture,material,mesh;i<self.columnNumber;i++){
+                for(let j = 0; j<self.columnNumber; j++,index++){
                     // context.clearRect(0,0,canvas.width,canvas.height)
                     // canvas contents will be used for a texture
                     canvas = document.createElement("canvas")
@@ -127,7 +115,7 @@ export default class Game{
                     // after the image is loaded, this function executes
                     // console.log(canvas.width,canvas.height)
                     // console.log(this.img.src)
-                    context.scale(self.scale,this.scale)
+                    // context.scale(self.scale,self.scale)
                     context.drawImage(imageObj, i*self.pieceWidth,j*self.pieceHeight,self.pieceWidth,self.pieceHeight,0,0,canvas.width,canvas.height)
                     if ( texture ) // checks if texture exists
                         texture.needsUpdate = true
@@ -136,14 +124,33 @@ export default class Game{
                     material.transparent = false
 
                     mesh = new THREE.Mesh(
-                        new THREE.PlaneGeometry(3, 3),
+                        new THREE.PlaneGeometry(self.planeWidth, self.planeHeight),
                         material
                     )
-                    mesh.position.set(i*3, 3*self.columnNumber-j*3,-9)
+                    console.log(`${self.freePieceNumber}/${(self.columnNumber*self.columnNumber - index)}`)
+                    let random = Math.random()
+                    console.log(random)
+                    console.log(random > self.freePieceNumber/(self.columnNumber*self.columnNumber - index)&&self.freePieceNumber>0)
+                    console.log(self.freePieceList.length)
+                    if(random < self.freePieceNumber/(self.columnNumber*self.columnNumber - index)&&self.freePieceNumber>0){
+                        let x = -self.boxSize/2+self.planeWidth/2 + Math.random()*(self.boxSize - self.planeWidth)
+                        let z = -self.boxSize/2+self.planeHeight/2 + Math.random()*(self.boxSize - self.planeHeight)
+                        mesh.rotation.x = Math.PI/2
+                        mesh.position.set(Math.round(x),0.5,Math.round(z))
+                        self.freePieceNumber--
+                        self.freePieceList.push(mesh.id)
+                    }else{
+                        mesh.position.set(i*self.planeWidth-self.scaledWidth/2+self.planeWidth/2, self.scaledHeight-self.planeHeight/2-j*self.planeHeight,-10)
+                    }
+                    // mesh.position.set(0, 2,-9)
                     self.meshList.push(mesh)
                     self.scene.add( mesh )
                     // console.log(typeof this.scene)
                 }
+            }
+            console.log(self.freePieceList)
+            for(let mesh of self.meshList){
+                console.log(mesh.id)
             }
         }
     }
@@ -167,11 +174,11 @@ export default class Game{
         // }
         if(intersects.length>0){
             for(let mesh of this.meshList){
-                if(mesh.id == intersects[0].object.id){
+                if((mesh.id in this.freePieceList)&&mesh.id!=intersects[0].object.id){
                     // mesh.material.color.set(0xff0000)
-                    mesh.position.z = -7
+                    mesh.rotation.x = Math.PI/2
                 }else{
-                    mesh.position.z = -9
+                    mesh.rotation.x = 0
                     // mesh.material.color.set(0xffffff)
                 }
             }
