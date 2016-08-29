@@ -21,7 +21,7 @@ export default class Game {
         this.controls = new THREE.VRControls(this.camera)
             // this.camera.position.y = 5
             //站立姿态
-        this.controls.userHeight = 10
+        this.controls.userHeight = 6
         this.controls.standing = true
         this.effect = new THREE.VREffect(this.renderer)
         this.effect.setSize(window.innerWidth, window.innerHeight)
@@ -143,7 +143,6 @@ export default class Game {
                         mesh.position.set(Math.round(x), 0.5, Math.round(z))
                         let blankMesh = mesh.clone()
                         self.holdMap[mesh.id] = blankMesh
-                        console.log(blankMesh.rotation === mesh.rotation)
                         blankMesh.rotation.x = 0
                         blankMesh.material = new THREE.MeshBasicMaterial({
                             color: 0x808080,
