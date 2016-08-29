@@ -1,6 +1,6 @@
 export default class Piece {
-    constructor(img,x,y,width,height,canvas){
-        this.img = img
+    constructor(mesh){
+        this.placed = false
         this.x = x
         this.y = y
         this.width = width
