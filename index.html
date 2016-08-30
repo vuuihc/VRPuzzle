@@ -65,8 +65,20 @@ body {
   界面按钮以及进入/退出VR模式的控制等
   -->
 <script src="lib/webvr-manager.js"></script>
+<!--
+    检测是否支持webgl
+ -->
+<script src="lib/Detector.js"></script>
 
-
-<script src="public/VRPuzzle.bundle.js"></script>
+<script >
+    window.onload = function(){
+        if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+        console.log("all loaded")
+        var script = document.createElement("script")
+        script.src = "public/VRPuzzle.bundle.js"
+        script.type = "text/javascript"
+        document.body.appendChild(script)
+    }
+</script>
 
 </html>
