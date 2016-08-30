@@ -99,7 +99,7 @@ export default class Game {
         this.holdMap = {}
             // load an image
         let imageObj = new Image()
-        imageObj.src = require("../../public/images/puzzles/cartoon (1).jpg")
+        imageObj.src = require("../../public/images/puzzles/cartoon (5).jpg")
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
         let ws = (canvas.width / 1.5) / imageObj.width
@@ -208,11 +208,10 @@ export default class Game {
         //更新获取HMD的信息
         this.controls.update()
 
-
         // Render the scene through the manager.
         //进行camera更新和场景绘制
         this.manager.render(this.scene, this.camera, timestamp)
-            // renderer.render(scene,camera)
+        // renderer.render(scene,camera)
 
         requestAnimationFrame(this.render)
     }
