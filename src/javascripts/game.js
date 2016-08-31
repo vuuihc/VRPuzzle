@@ -14,11 +14,18 @@ export default class Game {
         // Create a three.js scene.
         this.scene = new THREE.Scene()
 
+        this.cameraMesh = new THREE.Object3D()
+        this.cameraMesh.position.set(0,0,-2)
+        this.dummy = new THREE.Object3D();
+        this.scene.add( this.dummy );
+
+        this.dummy.add( this.cameraMesh );
         // Create a three.js camera.
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 
+        this.dummy.add(this.camera)
         // Apply VR headset positional data to camera.
-        this.controls = new THREE.VRControls(this.camera)
+        this.controls = new THREE.VRControls(this.dummy)
             // this.camera.position.y = 5
             //站立姿态
         this.controls.userHeight = 6
@@ -179,14 +186,23 @@ export default class Game {
                 if ((this.freePieceList.indexOf(mesh.id) > -1)) {
                     // mesh.material.color.set(0xff0000)
                     if(mesh.id == intersects[0].object.id){
-                        mesh.rotation.x = 0
+                        // mesh.rotation.x = 0
                         this.selectedMesh = mesh
+                        // this.dummy.children[0] =mesh.clone()
+                        // console.log(this.dummy)
+                        // this.selectedMesh.look
                         clickFlag = true
+                        // this.camera.add(mesh)
+                        // mesh.position.set(0,0,2)
                     }else{
                         mesh.rotation.x = Math.PI / 2
+                        mesh.rotation.y = 0
+                        mesh.rotation.z = 0
                     }
                 } else {
                     mesh.rotation.x = 0
+                    mesh.rotation.y = 0
+                    mesh.rotation.z = 0
                 }
             }
             if(this.selectedMesh && this.holdMap[this.selectedMesh.id].id == intersects[0].object.id){
@@ -206,6 +222,9 @@ export default class Game {
 
         // Update VR headset position and apply to camera.
         //更新获取HMD的信息
+        if(this.selectedMesh!=null){
+            this.selectedMesh.lookAt(this.camera.position)
+        }
         this.controls.update()
 
         // Render the scene through the manager.
