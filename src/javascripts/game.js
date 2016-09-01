@@ -14,18 +14,11 @@ export default class Game {
         // Create a three.js scene.
         this.scene = new THREE.Scene()
 
-        this.cameraMesh = new THREE.Object3D()
-        this.cameraMesh.position.set(0,0,-2)
-        this.dummy = new THREE.Object3D();
-        this.scene.add( this.dummy );
-
-        this.dummy.add( this.cameraMesh );
         // Create a three.js camera.
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 
-        this.dummy.add(this.camera)
         // Apply VR headset positional data to camera.
-        this.controls = new THREE.VRControls(this.dummy)
+        this.controls = new THREE.VRControls(this.camera)
             // this.camera.position.y = 5
             //站立姿态
         this.controls.userHeight = 6
@@ -104,6 +97,8 @@ export default class Game {
         this.planeHeight = this.scaledHeight / this.columnNumber
         this.selectedMesh = null //the last clicked meshId
         this.holdMap = {}
+        this.meshCanvasMap = {}
+        // this.
             // load an image
         let imageObj = new Image()
         imageObj.src = require("../../public/images/puzzles/cartoon (5).jpg")
@@ -142,6 +137,7 @@ export default class Game {
                         new THREE.PlaneGeometry(self.planeWidth, self.planeHeight),
                         material
                     )
+
                     let random = Math.random()
                     if (random < self.freePieceNumber / (self.columnNumber * self.columnNumber - index) && self.freePieceNumber > 0) {
                         let x = -self.boxSize / 2 + self.planeWidth / 2 + Math.random() * (self.boxSize - self.planeWidth)
@@ -158,7 +154,8 @@ export default class Game {
                         blankMesh.position.set(i*self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
                         self.scene.add(blankMesh)
                         self.freePieceNumber--
-                            self.freePieceList.push(mesh.id)
+                        self.freePieceList.push(mesh.id)
+                        self.meshCanvasMap[mesh.id] = canvas
                     } else {
                         mesh.position.set(i * self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
                     }
@@ -169,7 +166,7 @@ export default class Game {
                 }
             }
         }
-        console.log(this.holdMap)
+        // console.log(this.holdMap)
     }
     render(timestamp) {
         // var delta = Math.min(timestamp - this.lastRender, 500)
@@ -179,40 +176,43 @@ export default class Game {
         let intersects = this.raycaster.intersectObjects(this.scene.children)
         this.mouse.x = this.mouse.y = undefined
         if (intersects.length > 0) {
+            // console.log(intersects)
             let clickFlag = false
             for (let mesh of this.meshList) {
                 // console.log(this.freePieceList)
                 // console.log(`${mesh.id} in ${this.freePieceList},${mesh.id in this.freePieceList}`)
-                if ((this.freePieceList.indexOf(mesh.id) > -1)) {
+                if (this.freePieceList.indexOf(mesh.id) > -1 && mesh.id == intersects[0].object.id) {
                     // mesh.material.color.set(0xff0000)
-                    if(mesh.id == intersects[0].object.id){
-                        // mesh.rotation.x = 0
-                        this.selectedMesh = mesh
-                        // this.dummy.children[0] =mesh.clone()
-                        // console.log(this.dummy)
-                        // this.selectedMesh.look
-                        clickFlag = true
-                        // this.camera.add(mesh)
-                        // mesh.position.set(0,0,2)
-                    }else{
-                        mesh.rotation.x = Math.PI / 2
-                        mesh.rotation.y = 0
-                        mesh.rotation.z = 0
+                    if(this.selectedMesh!==null){
+                        this.clearCanvas()
+                        this.selectedMesh.visible = true
                     }
-                } else {
-                    mesh.rotation.x = 0
-                    mesh.rotation.y = 0
-                    mesh.rotation.z = 0
+                    this.selectedMesh = mesh
+                    this.mouse.pickBtn.innerHTML = "贴上"
+                    clickFlag = true
+                    // console.log(this.meshCanvasMap[mesh.id])
+                    // this.meshCanvasMap
+                    mesh.visible = false
+                    document.getElementById("pin").appendChild(this.meshCanvasMap[mesh.id])
                 }
             }
             if(this.selectedMesh && this.holdMap[this.selectedMesh.id].id == intersects[0].object.id){
                 let t = intersects[0].object.position
                 this.selectedMesh.position.set(t.x,t.y,t.z)
-                this.selectedMesh.rotation.x = 0
+                this.selectedMesh.rotation.set(0,0,0)
                 this.holdMap[this.selectedMesh.id].position.z -= 1
+                this.selectedMesh.visible = true
+                this.mouse.pickBtn.innerHTML = "捡起"
+                //在未拼成图片列表中取出当前项
                 this.freePieceList.splice(this.freePieceList.indexOf(this.selectedMesh.id),1)
+                //清楚当前选取的图像
+                this.clearCanvas()
+                this.selectedMesh = null
             }
-            if(!clickFlag){
+            if(this.selectedMesh && !clickFlag){
+                this.mouse.pickBtn.innerHTML = "捡起"
+                this.selectedMesh.visible = true
+                this.clearCanvas()
                 this.selectedMesh = null
             }
         }
@@ -222,9 +222,7 @@ export default class Game {
 
         // Update VR headset position and apply to camera.
         //更新获取HMD的信息
-        if(this.selectedMesh!=null){
-            this.selectedMesh.lookAt(this.camera.position)
-        }
+
         this.controls.update()
 
         // Render the scene through the manager.
@@ -265,5 +263,13 @@ export default class Game {
                 }
             }
         })
+    }
+    clearCanvas(){
+        let canvas = document.querySelector("#pin canvas")
+        let pin = document.getElementById("pin")
+        while(canvas){
+            pin.removeChild(canvas)
+            canvas = document.querySelector("#pin canvas")
+        }
     }
 }

@@ -21,6 +21,36 @@ body {
   padding: 0;
   overflow: hidden;
 }
+#pin{
+    position: absolute;
+}
+#pin img{
+    position: absolute;
+    width: 12vw;
+    height: 8vh;
+    top: 42vh;
+    left: 44vw;
+    z-index: 99;
+}
+#pin canvas{
+    position: absolute;
+    width: 30vw;
+    height: 15vh;
+    top: 40vh;
+    left: 35vw;
+}
+#pin button {
+    position: fixed;
+    width: 16vw;
+    height: 4vh;
+    bottom: 9vh;
+    left: 42vw;
+    font-size: 1rem;
+    background: rgba(4,190,2,0.5);
+    color: white;
+    border: none;
+    border-radius: 0.5rem;
+}
 </style>
 
 </head>
@@ -33,6 +63,10 @@ body {
         <img id=img4 src="public/images/puzzles/cartoon (4).jpg" /> -->
         <img id=img5 src="public/images/puzzles/cartoon (5).jpg" />
         <!-- <img id=img6 src="public/images/puzzles/cartoon (6).jpg" />  -->
+    </div>
+    <div id="pin">
+        <img id=pick-hand src="public/images/hand.png" />
+        <button id=pick-btn>捡起</button>
     </div>
 </body>
 
