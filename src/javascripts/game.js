@@ -72,7 +72,7 @@ export default class Game {
     		} );
 
     		var mesh = new THREE.Mesh( geometry, material );
-            console.log(mesh)
+            // console.log(mesh)
             mesh.position.set(0,0,10)
     		self.scene.add( mesh );
         })
@@ -152,11 +152,11 @@ export default class Game {
                 }
             }
         }
-        swal({
-            title: "提示",
-            text: "把屏幕中央的小手对准地上的图片，点击按钮捡起，再把图片对准原图位置，点击贴上",
-            confirmButtonText: "好的"
-        })
+        // swal({
+        //     title: "提示",
+        //     text: "把屏幕中央的小手对准地上的图片，点击按钮捡起，再把图片对准原图位置，点击贴上",
+        //     confirmButtonText: "好的"
+        // })
     }
     render(timestamp) {
         // var delta = Math.min(timestamp - this.lastRender, 500)
@@ -166,7 +166,7 @@ export default class Game {
         let intersects = this.raycaster.intersectObjects(this.scene.children)
         this.mouse.x = this.mouse.y = undefined
         if (intersects.length > 0) {
-            console.log(intersects)
+            // console.log(intersects)
             let clickFlag = false
             for (let mesh of this.meshList) {
 
