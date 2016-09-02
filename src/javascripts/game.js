@@ -225,7 +225,7 @@ export default class Game {
     clearCanvas(){
         let canvas = document.querySelector("#pin canvas")
         let pin = document.getElementById("pin")
-        while(canvas){
+        while(canvas!=null){
             pin.removeChild(canvas)
             canvas = document.querySelector("#pin canvas")
         }
