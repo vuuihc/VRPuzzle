@@ -19,7 +19,7 @@ export default class Mouse extends THREE.Vector2{
     }
     btnOnClick( event ) {
         this.x = ( 0.46 ) * 2 - 1
-        this.y = - ( 0.5 ) * 2 + 1
-        // this.pickHand.click()
+        this.y = - ( 0.38 ) * 2 + 1
+        console.log(this.x,this.y)
     }
 }

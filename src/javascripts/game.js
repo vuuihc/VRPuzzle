@@ -1,41 +1,21 @@
 
 import Mouse from "./mouse.js"
+import sweetalert from "sweetalert"
 
 export default class Game {
     constructor() {
-        this.renderer = new THREE.WebGLRenderer({
-            antialias: true
-        })
-        this.renderer.setPixelRatio(window.devicePixelRatio)
-
-        // Append the canvas element created by the renderer to document body element.
-        document.body.appendChild(this.renderer.domElement)
-
         // Create a three.js scene.
         this.scene = new THREE.Scene()
 
         // Create a three.js camera.
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 
-        // Apply VR headset positional data to camera.
-        // this.controls = new THREE.VRControls(this.camera)
         this.camera.position.set(0,10,0)
         this.controls = new THREE.DeviceOrientationControls( this.camera );
-            // this.camera.position.y = 5
-            //站立姿态
-        // this.controls.userHeight = 6
-        // this.controls.standing = true
-        // this.effect = new THREE.VREffect(this.renderer)
-        // this.effect.setSize(window.innerWidth, window.innerHeight)
 
-        // Create a VR manager helper to enter and exit VR mode.
-        //按钮和全屏模式管理
-        // var params = {
-        //     hideButton: false, // Default: false.
-        //     isUndistorted: false // Default: false.
-        // }
-        // this.manager = new WebVRManager(this.renderer, this.effect, params)
-        this.renderer = new THREE.WebGLRenderer();
+        this.renderer = new THREE.WebGLRenderer({
+            antialias: true
+        });
 		this.renderer.setPixelRatio( window.devicePixelRatio );
 		this.renderer.setSize(window.innerWidth, window.innerHeight);
 		this.renderer.domElement.style.position = 'absolute';
@@ -49,45 +29,53 @@ export default class Game {
         this.onTextureLoaded = this.onTextureLoaded.bind(this)
         this.onResize = this.onResize.bind(this)
         this.render = this.render.bind(this)
-        // this.setupStage = this.setupStage.bind(this)
-        // this.setStageDimensions = this.setStageDimensions.bind(this)
         this.placePieces = this.placePieces.bind(this)
             //
         this.meshList = []
         this.logFlag = true
             // Add a repeating grid as a skybox.
-        this.boxSize = 20
-        this.loader = new THREE.TextureLoader()
-        this.loader.load("public/images/box.png", this.onTextureLoaded)
+        this.boxSize = 30
+        // this.loader = new THREE.TextureLoader()
+        // this.loader.load("public/images/box.png", this.onTextureLoaded)
+        // let texture = new THREE.Texture()
+        this.onTextureLoaded()
         window.addEventListener("resize", this.onResize, true)
         // window.addEventListener("vrdisplaypresentchange", this.onResize, true)
         this.lastRender = 0
         this.display = null
     }
-    onTextureLoaded(texture) {
-        texture.wrapS = THREE.RepeatWrapping
-        texture.wrapT = THREE.RepeatWrapping
-        texture.repeat.set(this.boxSize, this.boxSize)
+    onTextureLoaded() {
+        // texture.wrapS = THREE.RepeatWrapping
+        // texture.wrapT = THREE.RepeatWrapping
+        // texture.repeat.set(this.boxSize, this.boxSize)
 
         let geometry = new THREE.BoxGeometry(this.boxSize, this.boxSize, this.boxSize)
-        let material = new THREE.MeshBasicMaterial({
-            map: texture,
-            color: "rgba(255,255,255,1)",
-            side: THREE.BackSide
-        })
+        let material = new THREE.MeshBasicMaterial({ color: 0xff00ff, side: THREE.BackSide, wireframe: true } )
 
         // Align the skybox to the floor (which is at y=0).
         this.skybox = new THREE.Mesh(geometry, material)
         this.skybox.position.y = this.boxSize / 2
         this.scene.add(this.skybox)
-
-
         this.placePieces()
+        this.placeSphere()
+    }
+    placeSphere(){
+        var geometry = new THREE.SphereGeometry( 50, 16, 8 );
+        geometry.scale(-1,1,1)
+		// geometry.scale( - 1, 1, 1 );
+        // var sphere = require("../../public/images/sphere (2).jpg")
+        var loader = new THREE.TextureLoader()
+        var self = this
+        loader.load("public/images/sphere (2).jpg",function(texture){
+            var material = new THREE.MeshBasicMaterial( {
+    			map: texture
+    		} );
 
-        // For high end VR devices like Vive and Oculus, take into account the stage
-        // parameters provided.
-        //在高端的设备上，要考虑到设备提供的场景信息的更新。
-        // this.setupStage()
+    		var mesh = new THREE.Mesh( geometry, material );
+            console.log(mesh)
+            mesh.position.set(0,0,10)
+    		self.scene.add( mesh );
+        })
     }
     placePieces() {
 
@@ -118,15 +106,9 @@ export default class Game {
         imageObj.onload = function() {
             for (let i = 0, index = 0, texture, material, mesh; i < self.columnNumber; i++) {
                 for (let j = 0; j < self.columnNumber; j++, index++) {
-                    // context.clearRect(0,0,canvas.width,canvas.height)
-                    // canvas contents will be used for a texture
                     canvas = document.createElement("canvas")
                     context = canvas.getContext("2d")
                     texture = new THREE.Texture(canvas)
-                        // after the image is loaded, this function executes
-                        // console.log(canvas.width,canvas.height)
-                        // console.log(this.img.src)
-                        // context.scale(self.scale,self.scale)
                     context.drawImage(imageObj, i * self.pieceWidth, j * self.pieceHeight, self.pieceWidth, self.pieceHeight, 0, 0, canvas.width, canvas.height)
                     if (texture) // checks if texture exists
                         texture.needsUpdate = true
@@ -170,7 +152,11 @@ export default class Game {
                 }
             }
         }
-        // console.log(this.holdMap)
+        sweetalert({
+            title: "提示",
+            text: "把屏幕中央的小手对准地上的图片，点击按钮捡起，再把图片对准原图位置，点击贴上",
+            confirmButtonText: "知道了"
+        })
     }
     render(timestamp) {
         // var delta = Math.min(timestamp - this.lastRender, 500)
@@ -180,11 +166,10 @@ export default class Game {
         let intersects = this.raycaster.intersectObjects(this.scene.children)
         this.mouse.x = this.mouse.y = undefined
         if (intersects.length > 0) {
-            // console.log(intersects)
+            console.log(intersects)
             let clickFlag = false
             for (let mesh of this.meshList) {
-                // console.log(this.freePieceList)
-                // console.log(`${mesh.id} in ${this.freePieceList},${mesh.id in this.freePieceList}`)
+
                 if (this.freePieceList.indexOf(mesh.id) > -1 && mesh.id == intersects[0].object.id) {
                     // mesh.material.color.set(0xff0000)
                     if(this.selectedMesh!==null){
@@ -194,8 +179,7 @@ export default class Game {
                     this.selectedMesh = mesh
                     this.mouse.pickBtn.innerHTML = "贴上"
                     clickFlag = true
-                    // console.log(this.meshCanvasMap[mesh.id])
-                    // this.meshCanvasMap
+
                     mesh.visible = false
                     document.getElementById("pin").appendChild(this.meshCanvasMap[mesh.id])
                 }
@@ -220,57 +204,17 @@ export default class Game {
                 this.selectedMesh = null
             }
         }
-        // console.log(this.selectedId)
-        //   立方体的旋转
-        //   this.cube.rotation.y += delta * 0.0006;
-
-        // Update VR headset position and apply to camera.
-        //更新获取HMD的信息
 
         this.controls.update()
-
-        // Render the scene through the manager.
-        //进行camera更新和场景绘制
-        // this.manager.render(this.scene, this.camera, timestamp)
         this.renderer.render(this.scene,this.camera)
 
         requestAnimationFrame(this.render)
     }
     onResize(e) {
-        // this.effect.setSize(window.innerWidth, window.innerHeight)
-        // this.camera.aspect = window.innerWidth / window.innerHeight
-        // this.camera.updateProjectionMatrix()
         this.camera.aspect = window.innerWidth / window.innerHeight;
 		this.camera.updateProjectionMatrix();
 		this.renderer.setSize( window.innerWidth, window.innerHeight );
     }
-    // setStageDimensions(stage) {
-    //     // Make the skybox fit the stage.
-    //     var material = this.skybox.material
-    //     this.scene.remove(this.skybox)
-    //
-    //     // Size the skybox according to the size of the actual stage.
-    //     var geometry = new THREE.BoxGeometry(stage.sizeX, this.boxSize, stage.sizeZ)
-    //     this.skybox = new THREE.Mesh(geometry, material)
-    //
-    //     // Place it on the floor.
-    //     this.skybox.position.y = this.boxSize / 2
-    //     this.scene.add(this.skybox)
-    //
-    //     // Place the cube in the middle of the scene, at user height.
-    //     //   cube.position.set(0, controls.userHeight, 0);
-    // }
-    // setupStage() {
-    //     const self = this
-    //     navigator.getVRDisplays().then(function(displays) {
-    //         if (displays.length > 0) {
-    //             self.display = displays[0]
-    //             if (self.display.stageParameters) {
-    //                 self.setStageDimensions(self.display.stageParameters)
-    //             }
-    //         }
-    //     })
-    // }
     clearCanvas(){
         let canvas = document.querySelector("#pin canvas")
         let pin = document.getElementById("pin")
