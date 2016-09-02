@@ -29,7 +29,7 @@ module.exports = {
 	},
 	output:{
 		path:__dirname+'/public',
-		publicPath: '/VRPuzzle/public/',
+		publicPath: '/public/',
 		filename:"[name].bundle.js"
 	},
 	module:{

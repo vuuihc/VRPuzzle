@@ -18,21 +18,29 @@ export default class Game {
         this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 10000)
 
         // Apply VR headset positional data to camera.
-        this.controls = new THREE.VRControls(this.camera)
+        // this.controls = new THREE.VRControls(this.camera)
+        this.camera.position.set(0,10,0)
+        this.controls = new THREE.DeviceOrientationControls( this.camera );
             // this.camera.position.y = 5
             //站立姿态
-        this.controls.userHeight = 6
-        this.controls.standing = true
-        this.effect = new THREE.VREffect(this.renderer)
-        this.effect.setSize(window.innerWidth, window.innerHeight)
+        // this.controls.userHeight = 6
+        // this.controls.standing = true
+        // this.effect = new THREE.VREffect(this.renderer)
+        // this.effect.setSize(window.innerWidth, window.innerHeight)
 
         // Create a VR manager helper to enter and exit VR mode.
         //按钮和全屏模式管理
-        var params = {
-            hideButton: false, // Default: false.
-            isUndistorted: false // Default: false.
-        }
-        this.manager = new WebVRManager(this.renderer, this.effect, params)
+        // var params = {
+        //     hideButton: false, // Default: false.
+        //     isUndistorted: false // Default: false.
+        // }
+        // this.manager = new WebVRManager(this.renderer, this.effect, params)
+        this.renderer = new THREE.WebGLRenderer();
+		this.renderer.setPixelRatio( window.devicePixelRatio );
+		this.renderer.setSize(window.innerWidth, window.innerHeight);
+		this.renderer.domElement.style.position = 'absolute';
+		this.renderer.domElement.style.top = 0;
+		document.body.appendChild(this.renderer.domElement);
 
         // raycaster
         this.raycaster = new THREE.Raycaster()
@@ -41,8 +49,8 @@ export default class Game {
         this.onTextureLoaded = this.onTextureLoaded.bind(this)
         this.onResize = this.onResize.bind(this)
         this.render = this.render.bind(this)
-        this.setupStage = this.setupStage.bind(this)
-        this.setStageDimensions = this.setStageDimensions.bind(this)
+        // this.setupStage = this.setupStage.bind(this)
+        // this.setStageDimensions = this.setStageDimensions.bind(this)
         this.placePieces = this.placePieces.bind(this)
             //
         this.meshList = []
@@ -52,7 +60,7 @@ export default class Game {
         this.loader = new THREE.TextureLoader()
         this.loader.load("public/images/box.png", this.onTextureLoaded)
         window.addEventListener("resize", this.onResize, true)
-        window.addEventListener("vrdisplaypresentchange", this.onResize, true)
+        // window.addEventListener("vrdisplaypresentchange", this.onResize, true)
         this.lastRender = 0
         this.display = null
     }
@@ -73,17 +81,13 @@ export default class Game {
         this.skybox.position.y = this.boxSize / 2
         this.scene.add(this.skybox)
 
-        //   var panelGeometry = new THREE.PlaneGeometry(2, 1)
-        //   var panel = new THREE.Mesh(panelGeometry,material)
-        //   panel.position.set(0,2.5,-1.999)
-        // // Add cube mesh to your three.js scene
-        //   this.scene.add(panel)
+
         this.placePieces()
 
         // For high end VR devices like Vive and Oculus, take into account the stage
         // parameters provided.
         //在高端的设备上，要考虑到设备提供的场景信息的更新。
-        this.setupStage()
+        // this.setupStage()
     }
     placePieces() {
 
@@ -151,13 +155,13 @@ export default class Game {
                             color: 0x808080,
                             side: THREE.DoubleSide
                         })
-                        blankMesh.position.set(i*self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
+                        blankMesh.position.set(i*self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, 5 + self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
                         self.scene.add(blankMesh)
                         self.freePieceNumber--
                         self.freePieceList.push(mesh.id)
                         self.meshCanvasMap[mesh.id] = canvas
                     } else {
-                        mesh.position.set(i * self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
+                        mesh.position.set(i * self.planeWidth - self.scaledWidth / 2 + self.planeWidth / 2, 5 + self.scaledHeight - self.planeHeight / 2 - j * self.planeHeight, -9.99)
                     }
                     // mesh.position.set(0, 2,-9)
                     self.meshList.push(mesh)
@@ -227,43 +231,46 @@ export default class Game {
 
         // Render the scene through the manager.
         //进行camera更新和场景绘制
-        this.manager.render(this.scene, this.camera, timestamp)
-        // renderer.render(scene,camera)
+        // this.manager.render(this.scene, this.camera, timestamp)
+        this.renderer.render(this.scene,this.camera)
 
         requestAnimationFrame(this.render)
     }
     onResize(e) {
-        this.effect.setSize(window.innerWidth, window.innerHeight)
-        this.camera.aspect = window.innerWidth / window.innerHeight
-        this.camera.updateProjectionMatrix()
+        // this.effect.setSize(window.innerWidth, window.innerHeight)
+        // this.camera.aspect = window.innerWidth / window.innerHeight
+        // this.camera.updateProjectionMatrix()
+        this.camera.aspect = window.innerWidth / window.innerHeight;
+		this.camera.updateProjectionMatrix();
+		this.renderer.setSize( window.innerWidth, window.innerHeight );
     }
-    setStageDimensions(stage) {
-        // Make the skybox fit the stage.
-        var material = this.skybox.material
-        this.scene.remove(this.skybox)
-
-        // Size the skybox according to the size of the actual stage.
-        var geometry = new THREE.BoxGeometry(stage.sizeX, this.boxSize, stage.sizeZ)
-        this.skybox = new THREE.Mesh(geometry, material)
-
-        // Place it on the floor.
-        this.skybox.position.y = this.boxSize / 2
-        this.scene.add(this.skybox)
-
-        // Place the cube in the middle of the scene, at user height.
-        //   cube.position.set(0, controls.userHeight, 0);
-    }
-    setupStage() {
-        const self = this
-        navigator.getVRDisplays().then(function(displays) {
-            if (displays.length > 0) {
-                self.display = displays[0]
-                if (self.display.stageParameters) {
-                    self.setStageDimensions(self.display.stageParameters)
-                }
-            }
-        })
-    }
+    // setStageDimensions(stage) {
+    //     // Make the skybox fit the stage.
+    //     var material = this.skybox.material
+    //     this.scene.remove(this.skybox)
+    //
+    //     // Size the skybox according to the size of the actual stage.
+    //     var geometry = new THREE.BoxGeometry(stage.sizeX, this.boxSize, stage.sizeZ)
+    //     this.skybox = new THREE.Mesh(geometry, material)
+    //
+    //     // Place it on the floor.
+    //     this.skybox.position.y = this.boxSize / 2
+    //     this.scene.add(this.skybox)
+    //
+    //     // Place the cube in the middle of the scene, at user height.
+    //     //   cube.position.set(0, controls.userHeight, 0);
+    // }
+    // setupStage() {
+    //     const self = this
+    //     navigator.getVRDisplays().then(function(displays) {
+    //         if (displays.length > 0) {
+    //             self.display = displays[0]
+    //             if (self.display.stageParameters) {
+    //                 self.setStageDimensions(self.display.stageParameters)
+    //             }
+    //         }
+    //     })
+    // }
     clearCanvas(){
         let canvas = document.querySelector("#pin canvas")
         let pin = document.getElementById("pin")
