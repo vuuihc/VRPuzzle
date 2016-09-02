@@ -1,6 +1,6 @@
 
 import Mouse from "./mouse.js"
-import sweetalert from "sweetalert"
+import swal from "sweetalert"
 
 export default class Game {
     constructor() {
@@ -152,7 +152,7 @@ export default class Game {
                 }
             }
         }
-        sweetalert({
+        swal({
             title: "提示",
             text: "把屏幕中央的小手对准地上的图片，点击按钮捡起，再把图片对准原图位置，点击贴上",
             confirmButtonText: "好的"
@@ -197,7 +197,7 @@ export default class Game {
                 this.clearCanvas()
                 this.selectedMesh = null
                 if(this.freePieceList.length == 0){
-                    sweetalert({
+                    swal({
                         title:"恭喜！",
                         text: "成功拼完了一张图，可是我也不会给你流量",
                         confirmButtonText: "好的"
