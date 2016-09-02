@@ -59,6 +59,6 @@ module.exports = {
         // 'react': 'React',
         // 'react-dom': 'ReactDOM',
 		// 'antd':'antd'
-        "sweetalert": "sweetalert"
+        "sweetalert": "swal"
     }
 }
