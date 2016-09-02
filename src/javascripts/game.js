@@ -155,7 +155,7 @@ export default class Game {
         sweetalert({
             title: "提示",
             text: "把屏幕中央的小手对准地上的图片，点击按钮捡起，再把图片对准原图位置，点击贴上",
-            confirmButtonText: "知道了"
+            confirmButtonText: "好的"
         })
     }
     render(timestamp) {
@@ -196,6 +196,13 @@ export default class Game {
                 //清楚当前选取的图像
                 this.clearCanvas()
                 this.selectedMesh = null
+                if(this.freePieceList.length == 0){
+                    sweetalert({
+                        title:"恭喜！",
+                        text: "成功拼完了一张图，可是我也不会给你流量",
+                        confirmButtonText: "好的"
+                    })
+                }
             }
             if(this.selectedMesh && !clickFlag){
                 this.mouse.pickBtn.innerHTML = "捡起"

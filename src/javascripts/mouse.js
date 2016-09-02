@@ -12,14 +12,14 @@ export default class Mouse extends THREE.Vector2{
     onMouseClick( event ) {
     	// calculate mouse position in normalized device coordinates
     	// (-1 to +1) for both components
-        console.log(event.clientX,event.clientY)
+        // console.log(event.clientX,event.clientY)
         this.x = ( event.clientX / window.innerWidth ) * 2 - 1
         this.y = - ( event.clientY / window.innerHeight ) * 2 + 1
-        console.log(this.x,this.y)
+        // console.log(this.x,this.y)
     }
     btnOnClick( event ) {
         this.x = ( 0.46 ) * 2 - 1
-        this.y = - ( 0.38 ) * 2 + 1
-        console.log(this.x,this.y)
+        this.y = - ( 0.385 ) * 2 + 1
+        // console.log(this.x,this.y)
     }
 }
