@@ -29,7 +29,7 @@ module.exports = {
 	},
 	output:{
 		path:__dirname+'/public',
-		publicPath: '/public/',
+		publicPath: '/VRPuzzle/public/',
 		filename:"[name].bundle.js"
 	},
 	module:{
@@ -49,7 +49,7 @@ module.exports = {
 		  },
 		  {
 			test:/\.(png|jpg|bmp)$/,
-			loader: 'url?limit=5000&name=images/puzzles/[name].[ext]'
+			loader: 'url?limit=3000&name=images/puzzles/[name].[ext]'
 		  }
 		]
 	},
@@ -59,5 +59,6 @@ module.exports = {
         // 'react': 'React',
         // 'react-dom': 'ReactDOM',
 		// 'antd':'antd'
+        "sweetalert": "sweetalert"
     }
 }
