@@ -2,7 +2,7 @@
 var path = require('path')
 var webpack = require('webpack')
 var isProduction = function() {
-    return process.env.NODE_ENV.toString() == "production";
+    return process.env.NODE_ENV == "production";
 };
 
 var plugins = [];
