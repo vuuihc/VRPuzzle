@@ -113,12 +113,12 @@ body {
 <script >
     window.onload = function(){
         if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-        // var vconsole = document.createElement("script");
-        // vconsole.src = "lib/vconsole.min.js";
-        // vconsole.type="text/javascript";
-        // document.head.appendChild(vconsole);
+        var vconsole = document.createElement("script");
+        vconsole.src = "lib/vconsole.min.js";
+        vconsole.type="text/javascript";
+        document.head.appendChild(vconsole);
         var script = document.createElement("script");
-        script.src = "public/VRPuzzle.bundle.js";
+        script.src = "public/VRPuzzle.bundle.js";0
         script.type = "text/javascript";
         document.body.appendChild(script);
     }
