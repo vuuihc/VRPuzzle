@@ -96,14 +96,15 @@ export default class Game {
         imageObj.src = require("../../public/images/puzzles/cartoon (5).jpg")
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
-        let ws = (canvas.width / 1.5) / imageObj.width
-        let hs = (canvas.height / 1.5) / imageObj.height
-        this.scale = Math.min(ws, hs)
-        this.pieceWidth = imageObj.width / this.columnNumber
-        this.pieceHeight = imageObj.height / this.columnNumber
+
             // console.log(this.pieceWidth,this.pieceHeight)
         let self = this
         imageObj.onload = function() {
+            let ws = (canvas.width / 1.5) / imageObj.width
+            let hs = (canvas.height / 1.5) / imageObj.height
+            self.scale = Math.min(ws, hs)
+            self.pieceWidth = imageObj.width / self.columnNumber
+            self.pieceHeight = imageObj.height / self.columnNumber
             for (let i = 0, index = 0, texture, material, mesh; i < self.columnNumber; i++) {
                 for (let j = 0; j < self.columnNumber; j++, index++) {
                     canvas = document.createElement("canvas")
