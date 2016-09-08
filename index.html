@@ -3,7 +3,7 @@
 <html lang="en">
 <head>
 <title>VR puzzle</title>
-<script src="lib/vconsole.min.js"></script>
+<!-- <script src="lib/vconsole.min.js"></script> -->
 <script src="lib/pace/pace.min.js"></script>
 <link href="lib/pace/Center-Atom.css" rel="stylesheet" />
 <meta charset="utf-8">
@@ -61,9 +61,9 @@ body {
     <div id=images style="display:none;">
         <!-- <img id=img1 src="public/images/puzzles/cartoon (1).jpg" /> -->
         <!-- <img id=img2 src="public/images/puzzles/cartoon (2).jpg" />-->
-        <!-- <img id=img3 src="public/images/puzzles/cartoon (3).jpg" />
-        <img id=img4 src="public/images/puzzles/cartoon (4).jpg" /> -->
-        <img id=img5 src="public/images/puzzles/cartoon (5).jpg" />
+         <img id=img3 src="public/images/puzzles/cartoon (3).jpg" />
+        <!-- <img id=img4 src="public/images/puzzles/cartoon (4).jpg" />  -->
+        <!-- <img id=img5 src="public/images/puzzles/cartoon (5).jpg" /> -->
         <!-- <img id=img6 src="public/images/puzzles/cartoon (6).jpg" />  -->
     </div>
     <div id="pin">
@@ -113,10 +113,14 @@ body {
 <script >
     window.onload = function(){
         if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-        var script = document.createElement("script")
-        script.src = "public/VRPuzzle.bundle.js"
-        script.type = "text/javascript"
-        document.body.appendChild(script)
+        var vconsole = document.createElement("script");
+        vconsole.src = "lib/vconsole.min.js";
+        vconsole.type="text/javascript";
+        document.head.appendChild(vconsole);
+        var script = document.createElement("script");
+        script.src = "public/VRPuzzle.bundle.js";
+        script.type = "text/javascript";
+        document.body.appendChild(script);
     }
 </script>
 
