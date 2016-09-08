@@ -52,7 +52,7 @@ module.exports = {
     },
     plugins: plugins,
     externals: {
-        // 'babel-polyfill': 'true',
+        'babel-polyfill': 'true',
         // 'react': 'React',
         // 'react-dom': 'ReactDOM',
         // 'antd':'antd'
