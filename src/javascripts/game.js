@@ -93,7 +93,7 @@ export default class Game {
         // this.
             // load an image
         let imageObj = new Image()
-        imageObj.src = require("../../public/images/puzzles/cartoon (5).jpg")
+        imageObj.src = require("../../public/images/puzzles/cartoon (3).jpg")
         let canvas = document.createElement("canvas")
         let context = canvas.getContext("2d")
 
@@ -173,16 +173,19 @@ export default class Game {
 
                 if (this.freePieceList.indexOf(mesh.id) > -1 && mesh.id == intersects[0].object.id) {
                     // mesh.material.color.set(0xff0000)
+                    console.log(1)
                     if(this.selectedMesh!==null){
                         this.clearCanvas()
                         this.selectedMesh.visible = true
                     }
                     this.selectedMesh = mesh
+                    console.log(2)
                     this.mouse.pickBtn.innerHTML = "贴上"
                     clickFlag = true
 
                     mesh.visible = false
                     document.getElementById("pin").appendChild(this.meshCanvasMap[mesh.id])
+                    console.log(3)
                 }
             }
             if(this.selectedMesh && this.holdMap[this.selectedMesh.id].id == intersects[0].object.id){
