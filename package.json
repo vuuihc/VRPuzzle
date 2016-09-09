@@ -4,7 +4,7 @@
   "description": "vr puzzle game",
   "scripts": {
     "start": "webpack-dev-server --hot --inline --progress --colors --history-api-fallback --define process.env.NODE_ENV='\"development\"'",
-    "build": "set process.env.NODE_ENV=production & webpack --progress --colors -p ",
+    "dist": "set NODE_ENV=production& webpack --progress --colors -p ",
     "server": "python -m SimpleHTTPServer 3035",
     "commit": "git add . & git commit -am'update' & git push "
   },
@@ -13,9 +13,7 @@
   },
   "dependencies": {
     "babel-polyfill": "^6.9.1",
-    "sweetalert": "^1.1.3",
-    "three": "^0.76.1",
-    "webvr-polyfill": "^0.9.5"
+    "sweetalert": "^1.1.3"
   },
   "devDependencies": {
     "babel-core": "^6.11.4",

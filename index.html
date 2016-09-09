@@ -11,7 +11,12 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-<style>
+<script src="lib/Detector.js"></script>
+<script src="lib/three.min.js"></script>
+<script src="lib/DeviceOrientationControls.js"></script>
+<script src="//cdn.bootcss.com/babel-polyfill/6.13.0/polyfill.min.js"></script>
+<script src="//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.js"></script>
+<link href="//cdn.bootcss.com/sweetalert/1.1.3/sweetalert.min.css" rel="stylesheet"><style>
 body {
   width: 100%;
   height: 100%;
@@ -23,6 +28,7 @@ body {
 }
 #pin{
     position: absolute;
+    z-index: 99
 }
 #pin img{
     position: absolute;
@@ -34,10 +40,10 @@ body {
 }
 #pin canvas{
     position: absolute;
-    width: 30vw;
+    width: 40vw;
     height: 15vh;
     top: 40vh;
-    left: 35vw;
+    left: 30vw;
 }
 /*#pin button {*/
     /*position: fixed;*/
@@ -89,69 +95,21 @@ body {
     box-shadow: 0px 2px 0px 0px #a93115, 0px 5px 12px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px -5px #000000;
 }
 </style>
-
 </head>
 
 <body>
-    <div id=images style="display:none;">
-        <!-- <img id=img1 src="public/images/puzzles/cartoon (1).jpg" /> -->
-        <!-- <img id=img2 src="public/images/puzzles/cartoon (2).jpg" />-->
-        <!-- <img id=img3 src="public/images/puzzles/cartoon (3).jpg" />
-        <img id=img4 src="public/images/puzzles/cartoon (4).jpg" /> -->
-        <img id=img5 src="public/images/puzzles/cartoon (5).jpg" />
-        <!-- <img id=img6 src="public/images/puzzles/cartoon (6).jpg" />  -->
-    </div>
     <div id="pin">
         <img id=pick-hand src="public/images/shoot.png" />
         <button id=pick-btn>捡起</button>
     </div>
+    <script >
+        window.onload = function(){
+            if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+            var script = document.createElement("script");
+            script.src = "public/VRPuzzle.bundle.js";0
+            script.type = "text/javascript";
+            document.body.appendChild(script);
+        }
+    </script>
 </body>
-
-<!--
-  A polyfill for Promises. Needed for IE and Edge.
-  -->
-<!-- <script src="/node_modules/es6-promise/dist/es6-promise.js"></script> -->
-
-<!--
-  three.js 3d library
-  -->
-<script src="lib/three.min.js"></script>
-
-<!--
-  VRControls.js acquires positional information from connected VR devices and applies the transformations to a three.js camera object.
-  从连接的VR设备中获得位置信息并应用在camera对象上
-   -->
-<script src="lib/VRControls.js"></script>
-
-<!--
-  VREffect.js handles stereo camera setup and rendering.
-  处理立体视觉和绘制相关
-  -->
-<script src="lib/VREffect.js"></script>
-
-<!--
-  A polyfill for WebVR using the Device{Motion,Orientation}Event API.
-  -->
-<script src="lib/webvr-polyfill.js"></script>
-
-<!--
-  Helps enter and exit VR mode, provides best practices while in VR.
-  界面按钮以及进入/退出VR模式的控制等
-  -->
-<script src="lib/webvr-manager.js"></script>
-<!--
-    检测是否支持webgl
- -->
-<script src="lib/Detector.js"></script>
-
-<script >
-    window.onload = function(){
-        if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
-        var script = document.createElement("script")
-        script.src = "public/VRPuzzle.bundle.js"
-        script.type = "text/javascript"
-        document.body.appendChild(script)
-    }
-</script>
-
 </html>
