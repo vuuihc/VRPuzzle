@@ -151,7 +151,7 @@ export default class Game {
             }
         }
     }
-    
+
     render(timestamp) {
         // var delta = Math.min(timestamp - this.lastRender, 500)
         this.lastRender = timestamp
@@ -207,7 +207,6 @@ export default class Game {
 
         this.controls.update()
         this.renderer.render(this.scene,this.camera)
-
         requestAnimationFrame(this.render)
     }
     onResize(e) {
