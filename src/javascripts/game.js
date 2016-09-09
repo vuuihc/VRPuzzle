@@ -164,7 +164,7 @@ export default class Game {
                     self.scene.add(mesh)
                         // console.log(typeof this.scene)
                 }
-            }
+            }        
         }
         // console.log(this.holdMap)
     }

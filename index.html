@@ -39,17 +39,54 @@ body {
     top: 40vh;
     left: 35vw;
 }
-#pin button {
+/*#pin button {*/
+    /*position: fixed;*/
+    /*width: 16vw;*/
+    /*height: 4vh;*/
+    /*bottom: 9vh;*/
+    /*left: 42vw;*/
+    /*font-size: 1rem;*/
+    /*background: rgba(4,190,2,0.5);*/
+    /*color: white;*/
+    /*border: none;*/
+    /*border-radius: 0.5rem;*/
+/*}*/
+#pin button{
     position: fixed;
-    width: 16vw;
-    height: 4vh;
     bottom: 9vh;
-    left: 42vw;
-    font-size: 1rem;
-    background: rgba(4,190,2,0.5);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
+    left: 33vw;
+    font-size: 2rem;
+    outline: none;
+    font-family: ‘Open Sans’ , sans-serif;
+    text-decoration: none !important;
+    margin: 0 auto;
+    padding: 1em 1em;
+    border-radius: 5px;
+    -webkit-transition: all 100ms linear;
+    transition: all 100ms linear;
+    touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+    background: -webkit-linear-gradient(top, #c03718 0%, #e44a27 100%);
+    background: linear-gradient(to  bottom, #c03718 0%, #e44a27 100%);
+    border: 1px solid #a93115;
+    box-shadow: 0px 4px 0px 0px #a93115, 0px 5px 12px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px -5px #000000;
+}
+#pin button:hover
+{
+    background: -webkit-linear-gradient(top, #c03718 0%, #d73e1b 100%);
+    background: linear-gradient(to bottom, #c03718 0%, #d73e1b 100%);
+}
+#pin button:hover:active
+{
+    border: none !important;
+
+    box-shadow: 0px 2px 0px 0px #a93115, 0px 5px 12px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px -5px #000000;
 }
 </style>
 
@@ -65,7 +102,7 @@ body {
         <!-- <img id=img6 src="public/images/puzzles/cartoon (6).jpg" />  -->
     </div>
     <div id="pin">
-        <img id=pick-hand src="public/images/hand.png" />
+        <img id=pick-hand src="public/images/shoot.png" />
         <button id=pick-btn>捡起</button>
     </div>
 </body>
