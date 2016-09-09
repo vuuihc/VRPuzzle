@@ -4,6 +4,5 @@ let game = new Game()
 
 const loop = ()=>{
     game.render()
-    // requestAnimationFrame(loop)
 }
 loop()
