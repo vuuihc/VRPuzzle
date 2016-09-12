@@ -97,11 +97,14 @@ export default class Game {
           screenHeight = window.innerHeight
         const style = {
             width: 0.4 * screenWidth + "px",
-            height: 0.15 * screenHeight + "px",
-            left: 0.4　* screenWidth + "px",
-            top: 0.3 * screenHeight + "px"
+            height: 0.16 * screenHeight + "px",
+            left: 0.3　* screenWidth + "px",
+            top: 0.32 * screenHeight + "px"
         }
-        canvas.style = style
+        canvas.style.width = style.width
+        canvas.style.height = style.height
+        canvas.style.left = style.left
+        canvas.style.top = style.top
         let context = canvas.getContext("2d")
         let self = this
         imageObj.onload = function() {
@@ -113,7 +116,10 @@ export default class Game {
             for (let i = 0, index = 0, texture, material, mesh; i < self.columnNumber; i++) {
                 for (let j = 0; j < self.columnNumber; j++, index++) {
                     canvas = document.createElement("canvas")
-                    canvas.style = style
+                    canvas.style.width = style.width
+                    canvas.style.height = style.height
+                    canvas.style.left = style.left
+                    canvas.style.top = style.top
                     context = canvas.getContext("2d")
                     texture = new THREE.Texture(canvas)
                     context.drawImage(imageObj, i * self.pieceWidth, j * self.pieceHeight, self.pieceWidth, self.pieceHeight, 0, 0, canvas.width, canvas.height)
