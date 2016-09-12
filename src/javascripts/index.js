@@ -6,13 +6,9 @@ const initDashboard = ()=>{
       screenHeight = window.innerHeight
     let handImg = document.querySelector("#pin>img")
     handImg.style.width = 0.12 * screenWidth + "px"
-    handImg.style.height = 0.12 * screenHeight+ "px"
-    handImg.style.left = 0.46 * screenWidth+ "px"
-    handImg.style.top = 0.34 * screenHeight + "px"
-    /*width: 32vw;*/
-    /*height: 10vh;*/
-    /*bottom: 9vh;*/
-    /*left: 34vw;*/
+    handImg.style.height = 0.12 * screenWidth+ "px"
+    handImg.style.left = 0.44 * screenWidth+ "px"
+    handImg.style.top = 0.4 * screenHeight - 0.06 * screenWidth + "px"
     let button = document.querySelector("#pin>button")
     button.style.width = 0.32 * screenWidth
     button.style.height = 0.1 * screenHeight
