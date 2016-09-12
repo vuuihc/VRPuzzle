@@ -24,7 +24,7 @@ if (isProduction()) {
     )
 }
 module.exports = {
-    devtool: 'inline-source-map',
+    devtool: isProduction()?false:'inline-source-map',
     entry: {
         VRPuzzle: __dirname + '/src/javascripts/index.js',
     },
