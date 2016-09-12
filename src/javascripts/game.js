@@ -16,11 +16,11 @@ export default class Game {
         this.renderer = new THREE.WebGLRenderer({
             antialias: true
         });
-		this.renderer.setPixelRatio( window.devicePixelRatio );
-		this.renderer.setSize(window.innerWidth, window.innerHeight);
-		this.renderer.domElement.style.position = 'absolute';
-		this.renderer.domElement.style.top = 0;
-		document.body.appendChild(this.renderer.domElement);
+        this.renderer.setPixelRatio( window.devicePixelRatio );
+        this.renderer.setSize(window.innerWidth, window.innerHeight);
+        this.renderer.domElement.style.position = 'absolute';
+        this.renderer.domElement.style.top = 0;
+        document.body.appendChild(this.renderer.domElement);
 
         // raycaster
         this.raycaster = new THREE.Raycaster()
@@ -69,12 +69,12 @@ export default class Game {
         var self = this
         loader.load("public/images/sphere (2).jpg",function(texture){
             var material = new THREE.MeshBasicMaterial( {
-    			map: texture
-    		});
+              map: texture
+            });
 
-    		var mesh = new THREE.Mesh( geometry, material );
-            mesh.position.set(0,0,10)
-    		self.scene.add( mesh );
+            var mesh = new THREE.Mesh( geometry, material );
+                mesh.position.set(0,0,10)
+            self.scene.add( mesh );
         })
     }
     placePieces() {
@@ -93,6 +93,15 @@ export default class Game {
         let imageObj = new Image()
         imageObj.src = require("../../public/images/puzzles/cartoon (3).jpg")
         let canvas = document.createElement("canvas")
+        const screenWidth = window.innerWidth,
+          screenHeight = window.innerHeight
+        const style = {
+            width: 0.4 * screenWidth + "px",
+            height: 0.15 * screenHeight + "px",
+            left: 0.4　* screenWidth + "px",
+            top: 0.3 * screenHeight + "px"
+        }
+        canvas.style = style
         let context = canvas.getContext("2d")
         let self = this
         imageObj.onload = function() {
@@ -104,6 +113,7 @@ export default class Game {
             for (let i = 0, index = 0, texture, material, mesh; i < self.columnNumber; i++) {
                 for (let j = 0; j < self.columnNumber; j++, index++) {
                     canvas = document.createElement("canvas")
+                    canvas.style = style
                     context = canvas.getContext("2d")
                     texture = new THREE.Texture(canvas)
                     context.drawImage(imageObj, i * self.pieceWidth, j * self.pieceHeight, self.pieceWidth, self.pieceHeight, 0, 0, canvas.width, canvas.height)
