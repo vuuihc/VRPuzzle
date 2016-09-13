@@ -67,7 +67,7 @@ export default class Game {
         // var sphere = require("../../public/images/sphere (2).jpg")
         var loader = new THREE.TextureLoader()
         var self = this
-        loader.load("public/images/sphere (2).jpg",function(texture){
+        loader.load("public/images/sphere (3).jpg",function(texture){
             var material = new THREE.MeshBasicMaterial( {
               map: texture
             });
@@ -91,7 +91,7 @@ export default class Game {
         this.holdMap = {}
         this.meshCanvasMap = {}
         let imageObj = new Image()
-        imageObj.src = require("../../public/images/puzzles/cartoon (3).jpg")
+        imageObj.src = require("../../public/images/puzzles/cartoon (2).jpg")
         let canvas = document.createElement("canvas")
         const screenWidth = window.innerWidth,
           screenHeight = window.innerHeight
