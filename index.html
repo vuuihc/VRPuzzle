@@ -20,8 +20,7 @@
 body {
   width: 100%;
   height: 100%;
-  /*background-color: #000;
-  color: #fff;*/
+
   margin: 0px;
   padding: 0;
   overflow: hidden;
@@ -32,30 +31,45 @@ body {
 }
 #pin img{
     position: absolute;
-    width: 12vw;
-    height: 8vh;
-    top: 42vh;
-    left: 44vw;
     z-index: 99;
 }
 #pin canvas{
     position: absolute;
-    width: 40vw;
-    height: 15vh;
-    top: 40vh;
-    left: 30vw;
 }
-#pin button {
+
+#pin button{
     position: fixed;
-    width: 32vw;
-    height: 10vh;
     bottom: 9vh;
-    left: 34vw;
-    font-size: 1.5rem;
-    background: rgba(4,190,2,0.5);
-    color: white;
-    border: none;
-    border-radius: 0.5rem;
+    left: 33vw;
+    font-size: 2rem;
+    outline: none;
+    font-family: ‘Open Sans’ , sans-serif;
+    text-decoration: none !important;
+    margin: 0 auto;
+    padding: 1em 1em;
+    border-radius: 5px;
+    touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    cursor: pointer;
+    text-align: center;
+    color: #ffffff;
+    background: -webkit-linear-gradient(top, #c03718 0%, #e44a27 100%);
+    background: linear-gradient(to  bottom, #c03718 0%, #e44a27 100%);
+    border: 1px solid #a93115;
+    box-shadow: 0px 4px 0px 0px #a93115, 0px 5px 12px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px -5px #000000;
+}
+#pin button:hover
+{
+    background: -webkit-linear-gradient(top, #c03718 0%, #d73e1b 100%);
+    background: linear-gradient(to bottom, #c03718 0%, #d73e1b 100%);
+}
+#pin button:hover:active
+{
+    border: none !important;
+    box-shadow: 0px 2px 0px 0px #a93115, 0px 5px 12px 0px rgba(0, 0, 0, 0.6), inset 0px 0px 10px -5px #000000;
 }
 </style>
 </head>
