@@ -14,7 +14,7 @@ export default class Mouse extends THREE.Vector2{
         this.y = - ( event.clientY / window.innerHeight ) * 2 + 1
     }
     btnOnClick( event ) {
-        this.x = ( 0.46 ) * 2 - 1
-        this.y = - ( 0.395 ) * 2 + 1
+        this.x = ( 0.5 ) * 2 - 1
+        this.y = - ( 0.4 ) * 2 + 1
     }
 }
